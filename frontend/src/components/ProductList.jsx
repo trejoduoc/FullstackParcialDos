@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { ProductService } from '../services/dataService';
-
-export const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem('nomadico_cart') || '[]');
-    const existingItem = cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({ ...product, quantity: 1 });
-    }
-
-    localStorage.setItem('nomadico_cart', JSON.stringify(cart));
-    return true;
-};
+import { ProductService, addToCart } from '../services/dataService';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Carousel, Badge } from 'react-bootstrap';
-import { ProductService } from '../services/dataService';
+import { ProductService, addToCart } from '../services/dataService';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -100,7 +100,14 @@ const ProductDetail = () => {
           <p className="fs-5 text-white-50 mb-4">
             {product.description || "Este equipamiento de alta calidad ha sido seleccionado para garantizar la máxima durabilidad en tus expediciones outdoor. Diseñado bajo estándares de sostenibilidad y resistencia."}
           </p>
-          <Button variant="outdoor" className="btn-outdoor btn-lg w-100 mb-3">
+          <Button
+            variant="outdoor"
+            className="btn-outdoor btn-lg w-100 mb-3"
+            onClick={() => {
+              addToCart(product);
+              alert(`¡${product.name} añadido al carrito!`);
+            }}
+          >
             Agregar al Carrito
           </Button>
           <Link to="/productos" className="text-warning text-decoration-none">← Volver al catálogo</Link>

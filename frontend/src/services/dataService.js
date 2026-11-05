@@ -1,7 +1,7 @@
 /**
  * DATA SERVICE - NOMADICO OUTDOOR
  * Este archivo actúa como una base de datos simulada para la aplicación.
- * Implementa operaciones CRUD básicas sobre los productos.
+ * Implementa operaciones CRUD básicas sobre los productos y la gestión del carrito.
  */
 
 const initialProducts = [
@@ -14,6 +14,7 @@ const initialProducts = [
 
 // Simulamos el almacenamiento en LocalStorage para que los datos no se borren al recargar
 const STORAGE_KEY = 'nomadico_products';
+const CART_STORAGE_KEY = 'nomadico_cart';
 
 const saveToLocalStorage = (data) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -22,6 +23,21 @@ const saveToLocalStorage = (data) => {
 const loadFromLocalStorage = () => {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : initialProducts;
+};
+
+// Función auxiliar para agregar al carrito (exportada para ser usada en cualquier componente)
+export const addToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+    const existingItem = cart.find(item => item.id === product.id);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    return true;
 };
 
 // OPERACIONES CRUD
