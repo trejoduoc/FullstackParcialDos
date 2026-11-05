@@ -1,29 +1,29 @@
-# Nomadico Outdoor
+# Nomadico Outdoor - Tienda de Equipamiento Outdoor
 
-**Desarrollo Fullstack II** - Sección 001D
+Proyecto desarrollado para la asignatura de **Fullstack II** (Sección 001D).
 
-**Docente**: Roberto Osses Vecchi
+## 🚀 Descripción General
+Este proyecto consiste en la migración de una tienda de equipamiento outdoor desde una arquitectura de HTML/CSS/JS plano hacia una aplicación moderna basada en **React**. El objetivo es implementar una Single Page Application (SPA) que permita una gestión eficiente de productos, carrito de compras y un panel administrativo.
 
-**Evaluación Parcial 1**
+## 🛠️ Stack Tecnológico
+- **Frontend**: React.js
+- **Estilos**: Bootstrap 5 / CSS3
+- **Persistencia**: LocalStorage (Simulación de base de datos mediante un Servicio de Datos CRUD)
+- **Testing**: Jasmine & Karma
 
----
+## 📋 Funcionalidades Implementadas / En Desarrollo
+- [x] **Capa de Datos**: Servicio CRUD completo para gestión de productos y persistencia en LocalStorage.
+- [ ] **Navegación**: Componente Navbar responsivo.
+- [ ] **Catálogo**: Vista de productos conectada al servicio de datos.
+- [ ] **Carrito**: Flujo de selección de productos y Checkout.
+- [ ] **Admin**: Panel de gestión de inventario (Crear, Editar, Eliminar productos).
+- [ ] **Calidad**: Suite de pruebas unitarias para validar la lógica de negocio.
 
-**Integrantes**:
+## 👥 Integrantes
 - Luis Cifuentes Paves
 - Felipe Galdames Sazie
 - Matias Pinto Barria
 - Sebastián Trejo Venegas
 
 ---
-
-**Contexto**:
-
-Tienda online de café de especialidad y té orgánico proveniente de cooperativas de comercio justo. Vende granos seleccionados en empaques compostables, termos reutilizables y kits de extracción manual diseñados para acompañar extensas jornadas de estudio o trabajo.
-
----
-
-**Paleta de Colores Referencial**:
-- Verde Pino (#1E3A2B)
-- Ocre Arcilla (#C87D55)
-- Sol Dorado (#E9C46A)
-- Ceniza Oscuro (#333333)
+**Docente**: Roberto Osses Vecchi
