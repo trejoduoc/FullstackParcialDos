@@ -21,7 +21,7 @@ Este proyecto consiste en la migración de una tienda de equipamiento outdoor de
 
 ## 👥 Integrantes
 - Luis Cifuentes Paves
-- Felipe Galdames Sazie
+- Leonard Hernandez
 - Matias Pinto Barria
 - Sebastián Trejo Venegas
 
