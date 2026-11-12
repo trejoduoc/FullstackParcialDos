@@ -7,6 +7,7 @@ import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import AdminPanel from './components/AdminPanel';
 import Chatbot from './components/Chatbot';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/carrito" element={<Cart />} />
           <Route path="/admin" element={<AdminPanel />} />
         </Routes>
+        <Footer />
         <Chatbot />
       </div>
     </Router>

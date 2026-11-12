@@ -68,9 +68,12 @@ const Cart = () => {
       <h2 className="text-center my-4 catalog-title">Tu Carrito de Aventuras</h2>
 
       {cartItems.length === 0 ? (
-        <div className="text-center">
-          <p className="text-white fs-4">Tu carrito está vacío. ¡Ve por el equipo!</p>
-          <Link to="/productos" className="btn btn-outline-warning">Ver Catálogo</Link>
+        <div className="text-center d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '60vh', paddingTop: '2rem' }}>
+          <div className="p-4 rounded" style={{ backgroundColor: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,193,7,0.3)', maxWidth: '500px', width: '100%' }}>
+            <h3 className="text-warning mb-3">🛒 Tu carrito está vacío</h3>
+            <p className="text-white fs-5 mb-4">¡Explora nuestro catálogo y encuentra tu próximo equipo outdoor!</p>
+            <Link to="/productos" className="btn btn-outdoor px-4 py-2">Ver Catálogo</Link>
+          </div>
         </div>
       ) : (
         <Row>
