@@ -15,6 +15,7 @@ Se implementó un patrón de **Servicio de Datos (`ProductService`)** que actúa
 - **Persistencia**: Utilización de `localStorage` para simular una base de datos NoSQL, permitiendo que los cambios (CRUD) persistan tras recargar la página.
 - **Operaciones**:
     - `getAll()`: Recupera la lista completa de productos.
+    - `getById(id)`: Recupera un producto por su identificador.
     - `create(product)`: Agrega un nuevo producto al almacenamiento.
     - `update(id, product)`: Modifica la información de un producto existente.
     - `delete(id)`: Elimina un producto mediante su identificador único.
@@ -35,6 +36,14 @@ Módulo dedicado a la gestión del catálogo:
 ### 2.3 Catálogo y Carrito
 - **Renderizado Dinámico**: Los productos se cargan desde el `ProductService` y se muestran en una cuadrícula responsiva.
 - **Lógica de Carrito**: Implementación de un sistema de conteo y almacenamiento de productos seleccionados, reflejado en tiempo real en el Navbar mediante un `Badge`.
+
+### 2.4 Pruebas Unitarias
+Se incorporó un entorno de pruebas para validar la lógica de la capa de datos.
+- **Herramienta**: Vitest, el test runner nativo de Vite. La pauta menciona Jasmine/Karma, pero `karma-vite` solo es compatible con Vite 2 a 5 y el proyecto usa Vite 8, lo que provocaba un error de resolución de dependencias (`ERESOLVE`). Vitest mantiene la sintaxis de Jasmine (`describe`, `it`, `expect`), con la diferencia de que se importan explícitamente.
+- **Configuración**: dependencia de desarrollo `vitest` y el script `"test": "vitest run"` en `package.json`. Se ejecuta con `npm test` y detecta los archivos `*.spec.js` y `*.test.js`.
+- **Estado**: la prueba base `src/ejemplo.spec.js` se ejecuta correctamente (1 de 1). Las pruebas del `ProductService` (lectura, creación, actualización, eliminación y manejo de errores) y del carrito están en desarrollo.
+- **Aislamiento**: como el entorno de pruebas no tiene `localStorage`, se simula con `vi.stubGlobal` y se reinician los módulos con `vi.resetModules()` antes de cada prueba, de modo que ningún test dependa de los datos de otro.
+- **Patrón**: cada prueba sigue Arrange-Act-Assert (preparar, ejecutar, verificar).
 
 ## 3. Flujos de Trabajo (Procedimientos)
 1. **Flujo de Usuario**: Landing Page $\rightarrow$ Catálogo $\rightarrow$ Detalle de Producto $\rightarrow$ Agregar al Carrito $\rightarrow$ Checkout.

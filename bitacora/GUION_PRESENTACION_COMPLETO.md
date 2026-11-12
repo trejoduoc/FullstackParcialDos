@@ -11,12 +11,12 @@
 1. [Guion de Presentación Oral](#1-guion-de-presentación-oral)
 2. [Demo en Vivo — Pasos a Seguir](#2-demo-en-vivo--pasos-a-seguir)
 3. [Preguntas del Profesor — Respuestas y Validadores](#3-preguntas-del-profesor--respuestas-y-validadores)
-4. [Pruebas Jasmine/Karma — Guía](#4-pruebas-jasminekarma--guía)
+4. [Pruebas unitarias (Vitest) — Guía](#4-pruebas-unitarias-vitest--guía)
 5. [Conceptos Clave para Repasar](#5-conceptos-clave-para-repasar)
 
 ---
 
-## 1. GUION DE PRESENTACIÓN ORAL>  Or type your own an
+## 1. GUION DE PRESENTACIÓN ORAL
 
 ### 1.1 Introducción y Concepto del Proyecto
 
@@ -602,93 +602,136 @@ const generateResponse = (text) => {
 
 ---
 
-## 4. PRUEBAS JASMINE/KARMA — GUÍA
+## 4. PRUEBAS UNITARIAS (VITEST) — GUÍA
 
-### ⚠️ Estado actual
+### Estado actual
 
-**Las pruebas Jasmine/Karma NO están implementadas aún.** El `package.json` no incluye estas dependencias. Sin embargo, aquí está lo que se espera y cómo explicarlo:
+- **Hecho:** Vitest está instalado y configurado en `frontend/`. El script `"test": "vitest run"` existe en `package.json` y la prueba base `src/ejemplo.spec.js` pasa (1 de 1).
+- **En curso:** pruebas del `ProductService` (CRUD) y del carrito, hasta completar los 10 tests que se piden.
+- **Decisión técnica (importante para la defensa):** la pauta menciona Jasmine/Karma. Se intentó instalar `karma-vite`, pero solo es compatible con Vite 2 a 5 y el proyecto usa **Vite 8**, por lo que `npm install` falla con error `ERESOLVE`. Se usó **Vitest**, que es el test runner nativo de Vite y mantiene la misma sintaxis (`describe`, `it`, `expect`, `toBe`, `toEqual`, `toThrow`). La diferencia práctica es que en Vitest hay que importar esas funciones al inicio del archivo.
 
 ### ¿Qué se espera?
 
-La pauta exige **pruebas unitarias** para validar la lógica de negocio. Se deben cubrir al menos estos casos:
+La pauta exige **pruebas unitarias** para validar la lógica de negocio. Casos planificados:
 
-| Tipo de prueba | Qué validar | Componente/Servicio |
-|---|---|---|
-| CRUD — Read | `ProductService.getAll()` retorna array de productos | `dataService.js` |
-| CRUD — Create | `ProductService.create()` agrega producto y retorna nuevo objeto | `dataService.js` |
-| CRUD — Update | `ProductService.update()` modifica producto existente | `dataService.js` |
-| CRUD — Delete | `ProductService.delete()` elimina producto por ID | `dataService.js` |
-| Carrito — Add | `addToCart()` agrega producto al carrito | `dataService.js` |
-| Carrito — Duplicate | `addToCart()` incrementa cantidad si ya existe | `dataService.js` |
-| Navbar — Cart count | El badge muestra la cantidad correcta | `Navbar.jsx` |
-| Admin — Login | Login exitoso con credenciales válidas | `AdminPanel.jsx` |
-| Admin — Roles | Admin ve CRUD, user ve área personal | `AdminPanel.jsx` |
-| Chatbot — Response | `generateResponse()` retorna link correcto por keyword | `Chatbot.jsx` |
+| Tipo de prueba | Qué validar | Componente/Servicio | Estado |
+|---|---|---|---|
+| CRUD — Read | `ProductService.getAll()` retorna array de productos | `dataService.js` | En curso |
+| CRUD — Read | `getById()` encuentra por número o texto, y devuelve `undefined` si no existe | `dataService.js` | En curso |
+| CRUD — Create | `ProductService.create()` agrega producto y retorna nuevo objeto | `dataService.js` | En curso |
+| CRUD — Update | `ProductService.update()` modifica un producto, y lanza error si no existe | `dataService.js` | En curso |
+| CRUD — Delete | `ProductService.delete()` elimina producto por ID | `dataService.js` | En curso |
+| Carrito — Add | `addToCart()` agrega producto al carrito | `dataService.js` | Pendiente |
+| Carrito — Duplicate | `addToCart()` incrementa cantidad si ya existe | `dataService.js` | Pendiente |
+| Navbar — Cart count | El badge muestra la cantidad correcta | `Navbar.jsx` | Pendiente |
+| Admin — Login | Login exitoso con credenciales válidas | `AdminPanel.jsx` | Pendiente |
+| Chatbot — Response | `generateResponse()` retorna link correcto por keyword | `Chatbot.jsx` | Pendiente |
 
-### Ejemplo de prueba Jasmine para el DataService
+### Cómo ejecutarlas
+
+```bash
+cd frontend
+npm test
+```
+
+Vitest busca archivos `*.spec.js` o `*.test.js`. Resultado esperado de la prueba base:
+
+```
+✓ src/ejemplo.spec.js (1 test)
+Test Files  1 passed (1)
+Tests       1 passed (1)
+```
+
+### Ejemplo de prueba para el ProductService (Vitest)
+
+`localStorage` no existe en el entorno de pruebas por defecto, por lo que se simula uno en memoria. Antes de cada prueba se reinician los módulos para empezar siempre con datos limpios.
 
 ```javascript
-// Ejemplo: dataService.spec.js
+// src/dataService.spec.js (en la misma carpeta que dataService.js)
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+
+let ProductService;
+
+beforeEach(async () => {
+  const store = {};
+  vi.stubGlobal('localStorage', {
+    getItem: (k) => (k in store ? store[k] : null),
+    setItem: (k, v) => { store[k] = String(v); },
+    removeItem: (k) => { delete store[k]; },
+  });
+  vi.resetModules();
+  ({ ProductService } = await import('./dataService'));
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
 describe('ProductService', () => {
-  beforeEach(() => {
-    localStorage.clear();
+  it('getAll devuelve los 5 productos iniciales', () => {
+    expect(ProductService.getAll()).toHaveLength(5);
   });
 
-  it('should return initial products when localStorage is empty', () => {
-    const products = ProductService.getAll();
-    expect(products).toBeDefined();
-    expect(Array.isArray(products)).toBe(true);
-    expect(products.length).toBeGreaterThan(0);
+  it('getById encuentra un producto con número o texto', () => {
+    expect(ProductService.getById(1).name).toBe('Carpa 2 Personas');
+    expect(ProductService.getById('2').name).toBe('Chaquetón Montaña');
   });
 
-  it('should create a new product', () => {
-    const newProduct = { name: 'Test', category: 'Test', price: 100, description: 'Test' };
-    const created = ProductService.create(newProduct);
-    expect(created.id).toBeDefined();
-    expect(ProductService.getAll().length).toBe(1);
+  it('getById devuelve undefined si no existe', () => {
+    expect(ProductService.getById(999)).toBeUndefined();
   });
 
-  it('should update an existing product', () => {
-    const created = ProductService.create({ name: 'Test', category: 'Test', price: 100, description: 'Test' });
-    ProductService.update(created.id, { name: 'Updated' });
-    const updated = ProductService.getById(created.id);
-    expect(updated.name).toBe('Updated');
+  it('create agrega un producto con id y lo guarda', () => {
+    const nuevo = ProductService.create({ name: 'Mochila', price: 20000, stock: 3 });
+    expect(nuevo.id).toBeDefined();
+    expect(ProductService.getAll()).toHaveLength(6);
+    expect(ProductService.getById(nuevo.id).name).toBe('Mochila');
   });
 
-  it('should delete a product', () => {
-    const created = ProductService.create({ name: 'Test', category: 'Test', price: 100, description: 'Test' });
-    ProductService.delete(created.id);
-    expect(ProductService.getAll().length).toBe(0);
+  it('update modifica los datos de un producto', () => {
+    ProductService.update(1, { price: 18000 });
+    expect(ProductService.getById(1).price).toBe(18000);
   });
 
-  it('should add product to cart', () => {
-    const product = { id: 1, name: 'Test', price: 100 };
-    addToCart(product);
-    const cart = JSON.parse(localStorage.getItem('nomadico_cart'));
-    expect(cart.length).toBe(1);
-    expect(cart[0].quantity).toBe(1);
+  it('update lanza error si el producto no existe', () => {
+    expect(() => ProductService.update(999, { price: 1 }))
+      .toThrow('Producto no encontrado');
   });
 
-  it('should increment quantity if product already in cart', () => {
-    const product = { id: 1, name: 'Test', price: 100 };
-    addToCart(product);
-    addToCart(product);
-    const cart = JSON.parse(localStorage.getItem('nomadico_cart'));
-    expect(cart[0].quantity).toBe(2);
+  it('delete elimina el producto', () => {
+    const res = ProductService.delete(1);
+    expect(res).toEqual({ success: true });
+    expect(ProductService.getById(1)).toBeUndefined();
+    expect(ProductService.getAll()).toHaveLength(4);
   });
 });
 ```
 
+### Cómo explicar este código
+
+- **`vi.stubGlobal('localStorage', ...)`**: reemplaza `localStorage` por un objeto falso que guarda los datos en memoria, porque Vitest corre en Node y no en un navegador.
+- **`vi.resetModules()` + `import()` dinámico**: fuerza a cargar `dataService.js` de nuevo en cada prueba, para que ninguna prueba herede los datos de otra.
+- **`beforeEach` / `afterEach`**: preparan y limpian el entorno alrededor de cada prueba.
+- **Patrón Arrange-Act-Assert**: preparar los datos, ejecutar la acción y verificar el resultado con `expect`.
+- **Probar el caso de error**: `toThrow` verifica que `update` falla correctamente con un ID inexistente.
+
 ### Cómo explicarlo en la presentación
 
-> "Las pruebas unitarias con **Jasmine y Karma** validarían la lógica del `ProductService`. Jasmine es el framework de assertions (`expect().toBe()`) y Karma es el test runner que ejecuta las pruebas en el navegador.
+> "Las pruebas unitarias validan la lógica del `ProductService`. Usé **Vitest** en lugar de Jasmine/Karma porque `karma-vite` no es compatible con Vite 8, la versión que usa mi proyecto. Vitest es el test runner nativo de Vite y mantiene la misma sintaxis de Jasmine: `describe`, `it` y `expect`. Jasmine y Karma cumplen la misma función conceptual: Jasmine define las aserciones y Karma ejecuta las pruebas en un navegador, mientras que Vitest hace ambas cosas en Node.
 >
-> Las pruebas cubrirían:
-> 1. **CRUD operations:** Verificar que cada operación modifica correctamente los datos en localStorage.
-> 2. **Carrito:** Verificar que `addToCart` agrega correctamente e incrementa cantidad en duplicados.
-> 3. **Componentes:** Verificar que los componentes renderizan correctamente con los datos recibidos.
+> Las pruebas cubren:
+> 1. **Operaciones CRUD:** cada operación modifica correctamente los datos en el almacenamiento.
+> 2. **Casos de error:** actualizar un producto inexistente lanza un error controlado.
+> 3. **Carrito:** `addToCart` agrega e incrementa cantidad en duplicados.
 >
 > Cada test sigue el patrón **Arrange-Act-Assert**: preparar datos, ejecutar acción, verificar resultado."
+
+### Posible pregunta del profesor
+
+**¿Por qué no usaste Karma si la pauta lo pedía?**
+> "Intenté instalarlo con `karma-vite`, pero solo soporta Vite 2 a 5 y mi proyecto usa Vite 8, así que la instalación fallaba por conflicto de dependencias. Para no bajar de versión todo el proyecto, usé Vitest, que se integra directamente con Vite y usa la misma sintaxis que Jasmine."
+
+**Validador — Código:** `package.json` → `"test": "vitest run"`; `src/ejemplo.spec.js`.
 
 ---
 
@@ -744,6 +787,7 @@ describe('ProductService', () => {
 | Rutas de la app | `App.jsx` | `<Routes>` → `<Route>` |
 | CRUD completo | `dataService.js` | `ProductService` object |
 | Carrito | `dataService.js` + `Cart.jsx` | `addToCart()`, `updateQuantity()` |
+| Pruebas unitarias | `*.spec.js` + `package.json` | `npm test` (Vitest) |
 | Login con roles | `AdminPanel.jsx` | `handleLogin()` |
 | Navbar dinámico | `Navbar.jsx` | `useEffect` con `setInterval` |
 | Chatbot | `Chatbot.jsx` | `generateResponse()` |

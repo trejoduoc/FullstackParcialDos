@@ -21,7 +21,7 @@ const saveToLocalStorage = (data) => {
 
 const loadFromLocalStorage = () => {
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : initialProducts;
+    return data ? JSON.parse(data) : structuredClone(initialProducts);
 };
 
 // OPERACIONES CRUD
