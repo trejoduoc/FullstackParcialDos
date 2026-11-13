@@ -59,4 +59,5 @@ La pauta académica solicitaba Jasmine y Karma como framework de pruebas. Inicia
 
 ---
 **Docente**: Roberto Osses Vecchi
+
 **Fecha de entrega**: Noviembre 2026
