@@ -1,0 +1,154 @@
+/*
+Verde Pino
+    hex(#1E3A2B)
+    rgb(30, 58, 43)
+
+Ocre Arcilla
+    hex(#C87D55)
+    rgb(200, 125, 85)
+
+Sol Dorado
+    hex(#E9C46A)
+    rgb(233, 196, 106)
+
+Ceniza Oscuro 
+    hex(#333333)
+    rgb(51, 51, 51)
+*/
+
+
+/* GENERAL */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #FFF8E1;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.45),
+            rgba(62, 39, 35, 0.45)),
+        url("../img/background.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    min-height: 100vh
+}
+
+td {
+    margin: 2px
+}
+
+
+/* ENCABEZADO */
+header {
+    width: 100%;
+    padding: 25px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.123);
+}
+
+header .logo {
+    font-size: 36px
+}
+
+
+/* MENU */
+nav {
+    text-align: center;
+    margin-top: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+nav a:hover {
+    color: #7CFC00;
+}
+
+
+/* PIE DE PAGINA */
+footer {
+    margin-top: 100px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+footer div {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* CONTACTO */
+.titulo-contacto {
+    text-align: center;
+}
+
+.formulario-contacto {
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto 120px;
+}
+
+.formulario-contacto div {
+    margin-bottom: 15px;
+}
+
+.formulario-contacto label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.formulario-contacto input,
+.formulario-contacto textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.formulario-contacto button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+}
+
+img {
+    max-width: 90%;
+}
+
+table {
+    align-items: center;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+button {
+    margin-bottom: 30px;
+}
+
+/*
+h1 {}
+h2 {}
+h3 {}
+h4 {}
+h5 {}
+h6 {}
+
+p {}
+
+ul {}
+ol {}
+
+a {}
+form {}
+
+img {}
+*/

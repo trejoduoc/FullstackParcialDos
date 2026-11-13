@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto Nomadico</title>
+    <link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.Tji1I0knvkftL50O2a6b3gHaHa%3Fpid%3DApi&f=1&ipt=d8759db6e0c337b2a548d66e9176ef3d20647b600b25e232c234dea2887a4c5a&ipo=images">
+    <link rel="stylesheet" href="styles/style.css">
+    
+</head>
+
+<body>
+
+        <header>
+        <nav class="navbar">
+		<div class="logo">Nomadico Outdoor</div>
+            <ul>
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="contacto.html">Contacto</a>
+            </ul>
+        </nav>
+
+        <h1>Contacto</h1>
+    </header>
+
+
+    <h2 class="titulo-contacto">Servicio al Cliente</h2>
+
+    <h3 class="titulo-contacto">Contáctanos</h3>
+    <p style="text-align: center;">Si tienes alguna duda o consulta puedes ingresar tus datos y nos contactaremos contigo lo antes posible.</p>
+
+
+        <form id="formulario-contacto" class="formulario-contacto" action="#" method="POST">
+            <div>
+                <label for="nombre">Nombre completo:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+            </div>
+
+
+                    <div>
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+        </div>
+
+        <div>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+56 9 1234 5678">
+        </div>
+
+        <div>
+            <label for="motivo">Motivo de contacto:</label>
+            <textarea id="motivo" name="motivo" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+        </div>
+
+        <button type="submit">Enviar mensaje</button>
+    </form>
+    
+    <footer>
+        <div>
+        <p>Nomadico Outdoor Spa 2026, Chile</p>
+        </div>
+    </footer>
+
+    <script src="script/script.js"></script>
+
+</body>
+</html>
